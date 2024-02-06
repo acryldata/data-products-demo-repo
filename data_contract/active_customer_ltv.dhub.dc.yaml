@@ -1,0 +1,33 @@
+# For forward compatibility - always set to version 1 for now.
+version: 1
+
+entity: urn:li:dataset:(urn:li:dataPlatform:dbt,long_tail_companions.analytics.active_customer_ltv,PROD)
+
+schema:
+  type: json-schema
+  json-schema:
+    type: object
+    properties:
+      field_foo:
+        type: string
+      field_bar:
+        type: boolean
+    required:
+      - field_foo
+      - field_bar
+
+freshness:
+  type: cron
+  cron: "*/5 * * * *"
+  timezone: "America/Los_Angeles"
+  freshness_metric: information_schema
+
+data_quality:
+  - type: unique
+    column: field_foo
+
+  - type: custom_sql
+    sql: "SELECT COUNT(*) FROM long_tail_companions.analytics.active_customer_ltv WHERE field_foo IS NOT NULL"
+    operator:
+      type: equal_to
+      value: 0

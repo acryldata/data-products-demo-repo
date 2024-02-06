@@ -1,0 +1,28 @@
+id: afc58366-8f1b-4ca6-8763-32d4dcc46dc5
+domain: 063ed147-a118-4ee6-8f9c-dde40cc71097
+display_name: User Activations
+
+# List of assets that belong to this Data Product
+assets:
+  - urn:li:dataset:(urn:li:dataPlatform:bigquery,growth.user.activations,PROD)
+  - urn:li:dataset:(urn:li:dataPlatform:s3,growth.user.activations,PROD)
+  - urn:li:dataset:(urn:li:dataPlatform:bigquery,growth.user.raw_activations,PROD)
+
+output_ports: ["urn:li:dataset:(urn:li:dataPlatform:bigquery,growth.user.activations,PROD)"]
+
+owners:
+  - id: urn:li:corpuser:gabe.lyons@acryl.io
+    type: BUSINESS_OWNER
+
+# Tags associated with this Data Product
+tags:
+  - urn:li:tag:identity
+
+# Glossary Terms associated with this Data Product
+#terms:
+#  - urn:li:glossaryTerm:ClientsAndAccounts.AccountBalance
+
+# Custom Properties
+properties:
+  lifecycle: production
+  sla: 7am every day

@@ -1,0 +1,53 @@
+version: 1
+entity: urn:li:dataset:(urn:li:dataPlatform:snowflake,demo_db.airflow_summit.invoices,PROD)
+
+schema:
+  type: json-schema
+  json-schema:
+    type: object
+    properties:
+      order_id:
+        type: string
+      order_filled:
+        type: boolean
+      amount:
+        type: integer
+    required:
+      - order_id
+      - order_filled
+
+freshness:
+  type: interval
+  interval: 3d
+  schedule:
+    cron: "0 0 * * *"
+    timezone: "UTC"
+
+  freshness_metric: high_watermark # or last_modified, information_schema, or audit_log
+
+  # These options are only supported for high_watermark and last_modified freshness metrics
+  field: "foo_bar"
+  where: "order_filled is true"
+
+data_quality:
+  - type: unique
+    column: order_id
+    schedule:
+      cron: "0 0 * * *"
+
+  - type: match_regex
+    column: field_bar
+    regex: "^[0-9]{3}-[0-9]{3}-[0-9]{4}$"
+
+    schedule:
+      cron: "0 0 * * *"
+
+  - type: custom_sql
+    description: "Ensure no test orders are in the table"
+    sql: "SELECT COUNT(*) FROM demo_db.airflow_summit.invoices WHERE order_id < 1000"
+    operator:
+      type: equal_to
+      value: 0
+
+    schedule:
+      cron: "0 0 * * *"

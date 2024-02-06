@@ -1,0 +1,27 @@
+id: 834edd81-ae85-4e84-8810-ee987bf90455
+domain: 063ed147-a118-4ee6-8f9c-dde40cc71097
+display_name: Life Time Value
+
+# List of assets that belong to this Data Product
+assets:
+  - urn:li:dataset:(urn:li:dataPlatform:snowflake,long_tail_companions.analytics.active_customer_ltv,PROD)
+  - urn:li:dataset:(urn:li:dataPlatform:snowflake,staging.long_tail_companions.analytics.active_customer_ltv,PROD)
+
+output_ports: ["urn:li:dataset:(urn:li:dataPlatform:snowflake,long_tail_companions.analytics.active_customer_ltv,PROD)"]
+
+owners:
+  - id: urn:li:corpuser:gabe.lyons@acryl.io
+    type: BUSINESS_OWNER
+
+# Tags associated with this Data Product
+tags:
+  - urn:li:tag:identity
+
+# Glossary Terms associated with this Data Product
+#terms:
+  - urn:li:glossaryTerm:ClientsAndAccounts.AccountBalance
+
+# Custom Properties
+properties:
+  lifecycle: production
+  sla: 7am every day

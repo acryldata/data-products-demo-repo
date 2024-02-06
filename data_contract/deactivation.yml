@@ -1,0 +1,61 @@
+version: 1
+entity: urn:li:dataset:(urn:li:dataPlatform:bigquery,growth.user.deactivations,PROD)
+
+schema:
+  type: json-schema
+  json-schema:
+    type: object
+    properties:
+      user_id:
+        type: string
+      timestamp:
+        type: string
+      is_returning_user:
+        type: boolean 
+      is_flagged_user:
+        type: boolean 
+      browser:
+        type: string 
+      ip:
+        type: string 
+      user_segment:
+        type: string 
+    required:
+      - user_id
+      - timestamp
+
+freshness:
+  type: interval
+  interval: 3d
+  schedule:
+    cron: "0 0 * * *"
+    timezone: "UTC"
+
+  freshness_metric: audit_log # high_watermark # or last_modified, information_schema, or audit_log
+
+  # These options are only supported for high_watermark and last_modified freshness metrics
+  # field: "foo_bar"
+  # where: "order_filled is true"
+
+data_quality:
+  - type: unique
+    column: user_id
+    schedule:
+      cron: "0 0 * * *"
+
+  - type: match_regex
+    column: user_segment
+    regex: "^(?![_-])[\\w-]+(?<![_-])$"
+
+    schedule:
+      cron: "0 0 * * *"
+
+  - type: custom_sql
+    description: "Ensure no test users are in the table"
+    sql: "SELECT COUNT(*) FROM [table] WHERE user_id < 1000"
+    operator:
+      type: equal_to
+      value: 0
+
+    schedule:
+      cron: "0 0 * * *"
