@@ -36,7 +36,7 @@ data_quality:
       cron: "0 0 * * *"
 
   - type: match_regex
-    column: field_bar
+    column: order_id
     regex: "^[0-9]{3}-[0-9]{3}-[0-9]{4}$"
 
     schedule:
